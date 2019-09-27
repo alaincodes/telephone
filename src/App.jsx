@@ -5,7 +5,6 @@ import './App.css';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
-import axios from 'axios';
 import personService from './services/persons';
 
 // eslint-disable-next-line no-undef
@@ -18,9 +17,14 @@ function App() {
 	const [filterName, setFilterName] = useState('');
 
 	useEffect(() => {
-		personService.getAll().then((response) => {
-			setPersons(response.data);
-		});
+		personService
+			.getAll()
+			.then((initialPersons) => {
+				setPersons(initialPersons);
+			})
+			.catch((error) => {
+				console.log(error, 'error');
+			});
 	}, []);
 
 	const getFilterName = persons.filter((name) => {
@@ -43,12 +47,29 @@ function App() {
 				id: uuidv4(),
 			};
 
-			personService.create(personObject).then((response) => {
-				setPersons(persons.concat(personObject));
-				setNewName('');
-				setNewNumber('');
-			});
+			// eslint-disable-next-line no-unused-vars
+			personService
+				.create(personObject)
+				.then((returnedPerson) => {
+					setPersons(persons.concat(returnedPerson));
+					setNewName('');
+					setNewNumber('');
+				})
+				.catch((error) => {
+					console.log(error, 'error');
+				});
 		}
+	};
+
+	const handleDelete = (id) => {
+		personService
+			.remove(id)
+			.then(() => {
+				setPersons(persons.filter((p) => p.id !== id));
+			})
+			.catch((error) => {
+				console.log(error, 'error');
+			});
 	};
 
 	const handleNameChange = (event) => {
@@ -76,7 +97,7 @@ function App() {
 				handleNumberChange={handleNumberChange}
 			/>
 			<h2>Numbers</h2>
-			<Persons getFilterName={getFilterName} />
+			<Persons getFilterName={getFilterName} handleDelete={handleDelete} />
 		</div>
 	);
 }
