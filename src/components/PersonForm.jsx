@@ -11,7 +11,8 @@ const PersonForm = ({
 	return (
 		<form onSubmit={handleSubmit}>
 			<div>
-				name: <input value={newName} onChange={handleNameChange} />
+				name:{' '}
+				<input name="personName" value={newName} onChange={handleNameChange} />
 			</div>
 			<div>
 				number: <input value={newNumber} onChange={handleNumberChange} />
