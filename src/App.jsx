@@ -6,6 +6,7 @@ import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
 import axios from 'axios';
+import personService from './services/persons';
 
 // eslint-disable-next-line no-undef
 const uuidv4 = require('uuid/v4');
@@ -17,7 +18,7 @@ function App() {
 	const [filterName, setFilterName] = useState('');
 
 	useEffect(() => {
-		axios.get('http://localhost:3001/persons').then((response) => {
+		personService.getAll().then((response) => {
 			setPersons(response.data);
 		});
 	}, []);
@@ -42,11 +43,12 @@ function App() {
 				id: uuidv4(),
 			};
 
-			setPersons(persons.concat(personObject));
+			personService.create(personObject).then((response) => {
+				setPersons(persons.concat(personObject));
+				setNewName('');
+				setNewNumber('');
+			});
 		}
-
-		setNewName('');
-		setNewNumber('');
 	};
 
 	const handleNameChange = (event) => {
