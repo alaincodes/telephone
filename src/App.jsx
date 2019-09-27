@@ -31,15 +31,31 @@ function App() {
 		return name.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1;
 	});
 
-	const checkDuplicateName = persons.find(
-		(person) => person.name.toLowerCase() === newName.toLowerCase(),
-	);
+	const checkDuplicateName = persons.find((person) => person.name === newName);
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
 		if (checkDuplicateName) {
-			alert(`${newName} is already added to phonebook`);
+			const confirm = window.confirm(
+				`${newName} is already  added to phonebook, replace the old number with a new one?`,
+			);
+			if (confirm) {
+				personService
+					.update(checkDuplicateName.id, { name: newName, number: newNumber })
+					.then((updatedPerson) => {
+						let updatedState = persons.filter(
+							(person) => person.id !== updatedPerson.id,
+						);
+						updatedState = [...updatedState, updatedPerson];
+						setPersons(updatedState);
+						setNewName('');
+						setNewNumber('');
+					})
+					.catch((error) => {
+						console.log(error, 'error');
+					});
+			}
 		} else {
 			const personObject = {
 				name: newName,
@@ -66,7 +82,7 @@ function App() {
 			personService
 				.remove(id)
 				.then(() => {
-					setPersons(persons.filter((p) => p.id !== id));
+					setPersons(persons.filter((person) => person.id !== id));
 				})
 				.catch((error) => {
 					console.log(error, 'error');

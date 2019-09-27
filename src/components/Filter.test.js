@@ -1,8 +1,8 @@
 import React from 'react';
+// eslint-disable-next-line no-unused-vars
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Filter from './Filter';
-import { wrap } from 'module';
 
 Enzyme.configure({ adapter: new Adapter() });
 
