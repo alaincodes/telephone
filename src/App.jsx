@@ -47,7 +47,6 @@ function App() {
 				id: uuidv4(),
 			};
 
-			// eslint-disable-next-line no-unused-vars
 			personService
 				.create(personObject)
 				.then((returnedPerson) => {
@@ -61,15 +60,18 @@ function App() {
 		}
 	};
 
-	const handleDelete = (id) => {
-		personService
-			.remove(id)
-			.then(() => {
-				setPersons(persons.filter((p) => p.id !== id));
-			})
-			.catch((error) => {
-				console.log(error, 'error');
-			});
+	const handleDelete = (id, name) => {
+		const confirm = window.confirm(`Delete ${name} ?`);
+		if (confirm) {
+			personService
+				.remove(id)
+				.then(() => {
+					setPersons(persons.filter((p) => p.id !== id));
+				})
+				.catch((error) => {
+					console.log(error, 'error');
+				});
+		}
 	};
 
 	const handleNameChange = (event) => {
