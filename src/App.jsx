@@ -6,6 +6,7 @@ import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
 import personService from './services/persons';
+import Notification from './components/Notification';
 
 // eslint-disable-next-line no-undef
 const uuidv4 = require('uuid/v4');
@@ -15,6 +16,7 @@ function App() {
 	const [newName, setNewName] = useState('');
 	const [newNumber, setNewNumber] = useState('');
 	const [filterName, setFilterName] = useState('');
+	const [notification, setNotification] = useState({});
 
 	useEffect(() => {
 		personService
@@ -49,11 +51,24 @@ function App() {
 						);
 						updatedState = [...updatedState, updatedPerson];
 						setPersons(updatedState);
+						setNotification({
+							type: 'success',
+							message: `Updated ${checkDuplicateName.name}`,
+						});
+						setTimeout(() => {
+							setNotification(null);
+						}, 3000);
 						setNewName('');
 						setNewNumber('');
 					})
 					.catch((error) => {
-						console.log(error, 'error');
+						setNotification({
+							type: 'error',
+							message: `${checkDuplicateName.name} has already removed from server`,
+						});
+						setTimeout(() => {
+							setNotification(null);
+						}, 3000);
 					});
 			}
 		} else {
@@ -67,6 +82,13 @@ function App() {
 				.create(personObject)
 				.then((returnedPerson) => {
 					setPersons(persons.concat(returnedPerson));
+					setNotification({
+						type: 'success',
+						message: `Added ${returnedPerson.name}`,
+					});
+					setTimeout(() => {
+						setNotification(null);
+					}, 3000);
 					setNewName('');
 					setNewNumber('');
 				})
@@ -105,6 +127,7 @@ function App() {
 	return (
 		<div>
 			<h2>Phonebook</h2>
+			<Notification notification={notification} />
 			<Filter filterName={filterName} handleFilterChange={handleFilterChange} />
 			<h2>add a new</h2>
 			<PersonForm
