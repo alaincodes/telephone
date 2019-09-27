@@ -61,7 +61,7 @@ function App() {
 						setNewName('');
 						setNewNumber('');
 					})
-					.catch((error) => {
+					.catch(() => {
 						setNotification({
 							type: 'error',
 							message: `${checkDuplicateName.name} has already removed from server`,
