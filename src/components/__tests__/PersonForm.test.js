@@ -2,14 +2,14 @@ import React from 'react';
 // eslint-disable-next-line no-unused-vars
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import PersonForm from './PersonForm';
+import PersonForm from '../PersonForm';
 
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('PersonForm component', () => {
-	test('renders', () => {
+	it('renders without crashing', () => {
+		// eslint-disable-next-line no-unused-vars
 		const wrapper = shallow(<PersonForm />);
-		expect(wrapper.exists()).toBe(true);
 	});
 
 	//  test('user text is echoed', () => {

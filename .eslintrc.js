@@ -7,6 +7,7 @@ module.exports = {
 		'eslint:recommended',
 		'plugin:jest/recommended',
 		'plugin:react/recommended',
+		'plugin:jest/style',
 	],
 	globals: {
 		Atomics: 'readonly',
@@ -25,5 +26,10 @@ module.exports = {
 		'linebreak-style': ['error', 'windows'],
 		quotes: ['error', 'single'],
 		semi: ['error', 'always'],
+		'jest/no-disabled-tests': 'warn',
+		'jest/no-focused-tests': 'error',
+		'jest/no-identical-title': 'error',
+		'jest/prefer-to-have-length': 'warn',
+		'jest/valid-expect': 'error',
 	},
 };
